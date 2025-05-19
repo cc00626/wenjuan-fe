@@ -6,3 +6,4 @@ const Register: FC = () => {
     </>
   )
 }
+export default Register

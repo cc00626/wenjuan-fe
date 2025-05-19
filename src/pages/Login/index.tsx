@@ -6,3 +6,4 @@ const Login: FC = () => {
     </>
   )
 }
+export default Login

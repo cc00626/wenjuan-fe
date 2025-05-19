@@ -1,6 +1,6 @@
 import React, {FC} from 'react'
 import style from './index.module.scss'
-import QuestionCard from '../../components/QuestionCard'
+import QuestionCard from '../../../components/QuestionCard'
 const rawQuestionList = [
   {
     _id: '01',
