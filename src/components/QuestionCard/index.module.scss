@@ -1,0 +1,32 @@
+.questionContainer {
+  margin-bottom: 20px;
+  padding: 12px;
+  border-radius: 3px;
+  background-color: white;
+  &:hover {
+    box-shadow: 0 2px 4px #e8e8e8;
+  }
+}
+
+.top {
+  display: flex;
+  .left {
+    flex: 1;
+  }
+  .right {
+    flex: 1;
+    text-align: right;
+  }
+}
+
+.bottom{
+  display: flex;
+  .left{
+    flex: 1;
+  }
+  .right{
+    flex: 1;
+    text-align: right;
+
+  }
+}
