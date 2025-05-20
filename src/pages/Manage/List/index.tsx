@@ -1,6 +1,7 @@
 import React, {FC} from 'react'
 import style from '../common.module.scss'
 import QuestionCard from '../../../components/QuestionCard'
+import ListSearch from '../../../components/ListSearch'
 const rawQuestionList = [
   {
     _id: '01',
@@ -51,7 +52,7 @@ const List: FC = () => {
           <h3>我的问卷</h3>
         </div>
         <div className={style.right}>
-          <p>搜索</p>
+          <ListSearch />
         </div>
       </div>
       <div className={style.center}>
