@@ -1,5 +1,13 @@
 import React, {FC} from 'react'
 import style from './index.module.scss'
+import {Divider, Button, Space, Tag} from 'antd'
+import {
+  EditOutlined,
+  LineChartOutlined,
+  StarOutlined,
+  CopyOutlined,
+  DeleteOutlined,
+} from '@ant-design/icons'
 interface PropsType {
   _id: string
   title: string
@@ -18,20 +26,37 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
             <a href="#">{title}</a>
           </div>
           <div className={style.right}>
-            <span>{isPublish ? '已发布' : '未发布'}</span>&nbsp;
-            <span>答案:{answerCount}</span>&nbsp;
-            <span>时间:{createdAt}</span>
+            <Space size="small">
+              {isPublish ? <Tag color="blue">已发布</Tag> : <Tag>未发布</Tag>}
+              <span>答案:{answerCount}</span>&nbsp;
+              <span>时间:{createdAt}</span>
+            </Space>
           </div>
         </div>
+        <Divider />
         <div className={style.bottom}>
           <div className={style.left}>
-            <button>编辑问卷</button>
-            <button>数据统计</button>
+            <Space size="small">
+              <Button type="text" size="small" icon={<EditOutlined />}>
+                编辑问卷
+              </Button>
+              <Button type="text" size="small" icon={<LineChartOutlined />} disabled={!isPublish}>
+                数据统计
+              </Button>
+            </Space>
           </div>
           <div className={style.right}>
-            <button>标星{isStar}</button>
-            <button>复制</button>
-            <button>删除</button>
+            <Space size="small">
+              <Button type="text" size="small" icon={<StarOutlined />}>
+                {isStar ? '取消收藏' : '收藏'}
+              </Button>
+              <Button type="text" size="small" icon={<CopyOutlined />}>
+                复制
+              </Button>
+              <Button type="text" size="small" icon={<DeleteOutlined />}>
+                删除
+              </Button>
+            </Space>
           </div>
         </div>
       </div>

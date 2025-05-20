@@ -11,6 +11,7 @@ import Star from '../pages/Manage/Star'
 import QuestionLayout from '../layouts/QuestionLayout'
 import Edit from '../pages/Question/Edit'
 import Stat from '../pages/Question/Stat'
+import NotFound from '../pages/NotFound'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
         element: <Stat />,
       },
     ],
+  },
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ])
 export default router

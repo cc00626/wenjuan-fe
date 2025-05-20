@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import style from './index.module.scss'
+import style from '../common.module.scss'
 import QuestionCard from '../../../components/QuestionCard'
 const rawQuestionList = [
   {
@@ -59,7 +59,7 @@ const List: FC = () => {
           return <QuestionCard key={questionItem._id} {...questionItem} />
         })}
       </div>
-      <div className={style.footer}>footer</div>
+      <div className={style.footer}>loading more</div>
     </>
   )
 }
