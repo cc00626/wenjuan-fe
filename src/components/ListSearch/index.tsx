@@ -20,10 +20,11 @@ const ListSearch: FC = () => {
   }
   //进行搜索
   const handleSearch = (value: string) => {
+    searchParams.set('keyword', value)
     //设置改变url
     nav({
       pathname,
-      search: `${LIST_SEARCH_KEY}=${value}`,
+      search: searchParams.toString(),
     })
   }
   return (
