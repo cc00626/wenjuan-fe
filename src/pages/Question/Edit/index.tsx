@@ -1,13 +1,7 @@
-import React, {useEffect} from 'react'
-import {getQuestion} from '../../../api/question'
-const Edit: React.FC = () => {
-  useEffect(() => {
-    async function getData() {
-      const res = await getQuestion('1')
-      console.log(res)
-    }
-    getData()
-  }, [])
-  return <div>编辑</div>
+import React, {FC} from 'react'
+import {useLoadQuestionData} from '../../../hooks/useLoadQuestionData'
+const Edit: FC = () => {
+  const {loading, data = {}} = useLoadQuestionData()
+  return loading ? <div>loading...</div> : <div>{data.title}</div>
 }
 export default Edit

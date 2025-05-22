@@ -1,16 +1,11 @@
-import React, {FC, useEffect} from 'react'
+import React, {FC} from 'react'
 import style from './index.module.scss'
 import {Typography, Button} from 'antd'
 import {useNavigate} from 'react-router-dom'
-import axios from 'axios'
 const {Title, Paragraph} = Typography
 const Home: FC = () => {
   const nav = useNavigate()
-  useEffect(() => {
-    axios.get('/api/question').then(res => {
-      console.log(res)
-    })
-  }, [])
+
   return (
     <div className={style.home}>
       <div className={style.container}>

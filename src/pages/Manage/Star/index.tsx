@@ -2,33 +2,12 @@ import React, {FC} from 'react'
 import style from '../common.module.scss'
 import QuestionCard from '../../../components/QuestionCard'
 import ListSearch from '../../../components/ListSearch'
-const rawQuestionList = [
-  {
-    _id: '01',
-    title: '问卷01',
-    isPublish: true,
-    isStar: true,
-    answerCount: 10,
-    createdAt: '2021-01-01',
-  },
-  {
-    _id: '03',
-    title: '问卷03',
-    isPublish: true,
-    isStar: true,
-    answerCount: 10,
-    createdAt: '2021-01-01',
-  },
-  {
-    _id: '04',
-    title: '问卷04',
-    isPublish: true,
-    isStar: true,
-    answerCount: 10,
-    createdAt: '2021-01-01',
-  },
-]
+import {useLoadQuestionList} from '../../../hooks/useLoadQuestionList'
+import ListPagination from '../../../components/ListPagination'
+import {Empty, Spin} from 'antd'
 const Star: FC = () => {
+  const {loading, data = {}} = useLoadQuestionList({isStar: true})
+  const {list = [], total = 0} = data
   return (
     <>
       <div className={style.header}>
@@ -40,11 +19,22 @@ const Star: FC = () => {
         </div>
       </div>
       <div className={style.center}>
-        {rawQuestionList.map(questionItem => {
-          return <QuestionCard key={questionItem._id} {...questionItem} />
-        })}
+        {loading && (
+          <div className={style.loading}>
+            <Spin />
+          </div>
+        )}
+        {!loading && list.length === 0 && <Empty description="暂无数据" />}
+        {!loading &&
+          list.length > 0 &&
+          list.map((questionItem: any) => {
+            return <QuestionCard key={questionItem._id} {...questionItem} />
+          })}
       </div>
-      <div className={style.footer}>loading more</div>
+      <div className={style.footer}>
+        {/* 分页 */}
+        <ListPagination total={total} />
+      </div>
     </>
   )
 }

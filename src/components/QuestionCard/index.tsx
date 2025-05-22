@@ -7,6 +7,7 @@ import {
   StarOutlined,
   CopyOutlined,
   DeleteOutlined,
+  StarFilled,
 } from '@ant-design/icons'
 interface PropsType {
   _id: string
@@ -23,7 +24,10 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
       <div className={style.questionContainer}>
         <div className={style.top}>
           <div className={style.left}>
-            <a href="#">{title}</a>
+            <Space size="small">
+              {isStar ? <StarFilled style={{color: '#1677ff'}} /> : <></>}
+              <a href="#">{title}</a>
+            </Space>
           </div>
           <div className={style.right}>
             <Space size="small">

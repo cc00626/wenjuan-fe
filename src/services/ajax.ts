@@ -6,7 +6,7 @@ const instance = axios.create({
 
 //配置响应拦截器
 instance.interceptors.response.use(res => {
-  const {errno, msg} = res.data
+  const {errno, msg, data} = res.data
   try {
     if (errno !== 0) {
       if (msg) {
@@ -16,7 +16,7 @@ instance.interceptors.response.use(res => {
   } catch (error) {
     throw new Error(error as string)
   }
-  return res.data
+  return data
 })
 
 export default instance
@@ -26,5 +26,6 @@ export type ResType = {
   msg?: string
 }
 export type ResDataType = {
-  [key: string]: unknown
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any
 }
