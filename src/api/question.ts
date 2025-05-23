@@ -24,3 +24,9 @@ export async function getQuestionList(opt: Partial<SearchOption>): Promise<ResDa
   const data = await axios.get('/api/question', {params: opt})
   return data
 }
+
+//更新问卷
+export async function updateQuestion(id: string, opt: any): Promise<ResDataType> {
+  const data = await axios.patch(`/api/question/${id}`, opt)
+  return data
+}

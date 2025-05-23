@@ -1,6 +1,7 @@
-import React, {FC} from 'react'
+import React, {FC, useState} from 'react'
 import style from './index.module.scss'
-import {Divider, Button, Space, Tag} from 'antd'
+import {Divider, Button, Space, Tag, message} from 'antd'
+import {updateQuestion} from '../../api/question'
 import {
   EditOutlined,
   LineChartOutlined,
@@ -9,6 +10,7 @@ import {
   DeleteOutlined,
   StarFilled,
 } from '@ant-design/icons'
+import {useRequest} from 'ahooks'
 interface PropsType {
   _id: string
   title: string
@@ -18,14 +20,30 @@ interface PropsType {
   createdAt: string
 }
 const QuestionCard: FC<PropsType> = (props: PropsType) => {
-  const {title, isPublish, isStar, answerCount, createdAt} = props
+  const {_id, title, isPublish, isStar, answerCount, createdAt} = props
+  const [isStarState, setIsStarState] = useState(isStar)
+  //收藏问卷
+  const {run: starQuestion} = useRequest(
+    async () => {
+      const data = await updateQuestion(_id, {isStar: !isStarState})
+      return data
+    },
+    {
+      manual: true,
+      debounceWait: 500,
+      onSuccess: () => {
+        message.success(isStarState ? '取消收藏成功' : '收藏成功')
+        setIsStarState(!isStarState)
+      },
+    }
+  )
   return (
     <>
       <div className={style.questionContainer}>
         <div className={style.top}>
           <div className={style.left}>
             <Space size="small">
-              {isStar ? <StarFilled style={{color: '#1677ff'}} /> : <></>}
+              {isStarState ? <StarFilled style={{color: '#1677ff'}} /> : <></>}
               <a href="#">{title}</a>
             </Space>
           </div>
@@ -51,8 +69,8 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
           </div>
           <div className={style.right}>
             <Space size="small">
-              <Button type="text" size="small" icon={<StarOutlined />}>
-                {isStar ? '取消收藏' : '收藏'}
+              <Button type="text" size="small" icon={<StarOutlined />} onClick={starQuestion}>
+                {isStarState ? '取消收藏' : '收藏'}
               </Button>
               <Button type="text" size="small" icon={<CopyOutlined />}>
                 复制
