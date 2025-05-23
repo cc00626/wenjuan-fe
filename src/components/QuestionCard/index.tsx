@@ -1,7 +1,7 @@
 import React, {FC, useState} from 'react'
 import style from './index.module.scss'
-import {Divider, Button, Space, Tag, message} from 'antd'
-import {updateQuestion} from '../../api/question'
+import {Divider, Button, Space, Tag, message, Popconfirm, Modal} from 'antd'
+import {updateQuestion, copyQuestion} from '../../api/question'
 import {
   EditOutlined,
   LineChartOutlined,
@@ -22,6 +22,7 @@ interface PropsType {
 const QuestionCard: FC<PropsType> = (props: PropsType) => {
   const {_id, title, isPublish, isStar, answerCount, createdAt} = props
   const [isStarState, setIsStarState] = useState(isStar)
+  const [isShowModal, setIsShowModal] = useState(false)
   //收藏问卷
   const {run: starQuestion} = useRequest(
     async () => {
@@ -37,6 +38,46 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
       },
     }
   )
+
+  //复制问卷
+  const {loading, run: confirmCopy} = useRequest(
+    async () => {
+      const res = await copyQuestion(_id)
+      return res
+    },
+    {
+      manual: true,
+      onSuccess: res => {
+        console.log(res)
+        message.success('复制成功')
+      },
+    }
+  )
+
+  //显示弹框
+  const showModal = () => {
+    setIsShowModal(true)
+  }
+  //关闭弹框
+  const handleCancel = () => {
+    setIsShowModal(false)
+  }
+
+  //确认弹框,进行假删除
+  const {run: handleDelete} = useRequest(
+    async () => {
+      await updateQuestion(_id, {isDelete: true})
+    },
+    {
+      manual: true,
+      onSuccess: res => {
+        setIsShowModal(false)
+        message.success('删除成功')
+        console.log(res)
+      },
+    }
+  )
+
   return (
     <>
       <div className={style.questionContainer}>
@@ -72,12 +113,27 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
               <Button type="text" size="small" icon={<StarOutlined />} onClick={starQuestion}>
                 {isStarState ? '取消收藏' : '收藏'}
               </Button>
-              <Button type="text" size="small" icon={<CopyOutlined />}>
-                复制
-              </Button>
-              <Button type="text" size="small" icon={<DeleteOutlined />}>
+              <Popconfirm
+                title="你确定要复制吗"
+                okText="确定"
+                cancelText="取消"
+                onConfirm={confirmCopy}
+              >
+                <Button type="text" size="small" icon={<CopyOutlined />}>
+                  复制
+                </Button>
+              </Popconfirm>
+              <Button type="text" size="small" icon={<DeleteOutlined />} onClick={showModal}>
                 删除
               </Button>
+              <Modal
+                title="你确定要删除吗"
+                okText="确定"
+                cancelText="取消"
+                open={isShowModal}
+                onCancel={handleCancel}
+                onOk={handleDelete}
+              ></Modal>
             </Space>
           </div>
         </div>
