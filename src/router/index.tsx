@@ -69,3 +69,23 @@ const router = createBrowserRouter([
   },
 ])
 export default router
+
+//是否在登录或注册页面
+export const isLoginOrRegister = (pathname: string) => {
+  if (['/login', '/register'].includes(pathname)) {
+    //表示在登录或注册页面
+    return true
+  } else {
+    return false
+  }
+}
+
+//判断是否需要用户信息
+
+export const isNeedUserInfo = (pathname: string) => {
+  if (['/', '/login', '/register'].includes(pathname)) {
+    return true
+  } else {
+    return false
+  }
+}
