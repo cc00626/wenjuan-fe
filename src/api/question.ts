@@ -36,3 +36,9 @@ export async function copyQuestion(id: string): Promise<ResDataType> {
   const data = await axios.post(`/api/question/duplicate/${id}`)
   return data
 }
+
+//彻底删除问卷
+export async function deleteQuestion(ids: string[]): Promise<ResDataType> {
+  const data = await axios.delete('/api/question', {data: {ids}})
+  return data
+}

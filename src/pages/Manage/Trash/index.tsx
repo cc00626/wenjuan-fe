@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react'
-import {Table, TableProps, Tag, TableColumnsType} from 'antd'
+import {Table, TableProps, Tag, TableColumnsType, Space, Button} from 'antd'
 import {useLoadQuestionList} from '../../../hooks/useLoadQuestionList'
 interface DataType {
   _id: string
@@ -40,11 +40,15 @@ const rowSelection: TableProps<DataType>['rowSelection'] = {
   },
 }
 const Trash: FC = () => {
-  const {loading, data = {}} = useLoadQuestionList({isDelete: true})
-  const {list = [], total = 0} = data
+  const {data = {}} = useLoadQuestionList({isDelete: true})
+  const {list = []} = data
   const [selectionType] = useState<'checkbox' | 'radio'>('checkbox')
   return (
     <>
+      <Space>
+        <Button>恢复</Button>
+        <Button>彻底删除</Button>
+      </Space>
       <Table
         dataSource={list}
         columns={columns}

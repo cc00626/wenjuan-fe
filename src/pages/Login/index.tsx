@@ -1,8 +1,12 @@
 import React, {FC, useEffect} from 'react'
-import {Typography, Space, Form, Input, Button, Checkbox} from 'antd'
+import {Typography, Space, Form, Input, Button, Checkbox, message} from 'antd'
 import {UserOutlined} from '@ant-design/icons'
 import style from './index.module.scss'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
+import {useRequest} from 'ahooks'
+import {userLogin} from '../../api/user'
+import {setToken} from '../../utils/token'
+import {ResDataType} from '../../services/ajax'
 
 const {Title} = Typography
 const USERNAME_KEY = 'username'
@@ -26,16 +30,36 @@ const getUserInfo = () => {
   }
 }
 const Login: FC = () => {
+  const nav = useNavigate()
+  //登录的ajax请求
+  const {run: login} = useRequest(
+    async (username: string, password: string) => {
+      const data = await userLogin(username, password)
+      return data
+    },
+    {
+      manual: true,
+      onSuccess: (res: ResDataType) => {
+        const {token} = res
+        setToken(token) //设置token
+        nav('/manage/list') //跳转列表页
+        message.success('登录成功')
+      },
+    }
+  )
+
   const [form] = Form.useForm()
   useEffect(() => {
     //加载时获取账号
     const formData = getUserInfo()
     form.setFieldsValue(formData)
   }, [])
+
   //表单进行提交
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleFinish = (values: any) => {
     const {username, password, remember} = values
+    login(username, password) //发起ajax请求
     if (remember) {
       //记住我
       saveUserInfo(username, password)

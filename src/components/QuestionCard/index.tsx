@@ -22,6 +22,7 @@ interface PropsType {
 const QuestionCard: FC<PropsType> = (props: PropsType) => {
   const {_id, title, isPublish, isStar, answerCount, createdAt} = props
   const [isStarState, setIsStarState] = useState(isStar)
+  const [isDeleteState, setIsDeleteState] = useState(false)
   const [isShowModal, setIsShowModal] = useState(false)
   //收藏问卷
   const {run: starQuestion} = useRequest(
@@ -40,7 +41,7 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
   )
 
   //复制问卷
-  const {loading, run: confirmCopy} = useRequest(
+  const {run: confirmCopy} = useRequest(
     async () => {
       const res = await copyQuestion(_id)
       return res
@@ -72,12 +73,14 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
       manual: true,
       onSuccess: res => {
         setIsShowModal(false)
+        setIsDeleteState(true)
         message.success('删除成功')
         console.log(res)
       },
     }
   )
 
+  if (isDeleteState) return null
   return (
     <>
       <div className={style.questionContainer}>

@@ -2,12 +2,30 @@ import React, {FC} from 'react'
 import {Typography, Space, Form, Input, Button} from 'antd'
 import {UserAddOutlined} from '@ant-design/icons'
 import style from './index.module.scss'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
+import {userRegister} from '../../api/user'
+import {useRequest} from 'ahooks'
 const {Title} = Typography
 const Register: FC = () => {
+  const nav = useNavigate()
+  const {run: register} = useRequest(
+    async (username: string, password: string, nickname: string) => {
+      const data = await userRegister(username, password, nickname)
+      return data
+    },
+    {
+      manual: true,
+      onSuccess: () => {
+        nav('/login') // 跳转
+      },
+    }
+  )
+
   //表单进行提交
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleFinish = (values: any) => {
+    const {username, password, nickname} = values
+    register(username, password, nickname) //发送ajax请求
     console.log(values)
   }
   return (
@@ -58,7 +76,7 @@ const Register: FC = () => {
         >
           <Input.Password />
         </Form.Item>
-        <Form.Item label="昵称" name="nickName">
+        <Form.Item label="昵称" name="nickname">
           <Input />
         </Form.Item>
         <Form.Item wrapperCol={{offset: 6, span: 16}}>
