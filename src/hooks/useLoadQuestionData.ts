@@ -48,7 +48,9 @@ export function useLoadQuestionData() {
   useEffect(() => {
     if (!data) return
     const {componentList = []} = data
-    dispatch(resetComponent({selectId: '', componentList}))
+    if (componentList.length > 0) {
+      dispatch(resetComponent({selectId: componentList[0].fe_id, componentList}))
+    }
   }, [data])
 
   //监听id加载数据

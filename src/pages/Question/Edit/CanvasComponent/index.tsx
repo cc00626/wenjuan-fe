@@ -39,7 +39,7 @@ const CanvasComponent: FC<PropsType> = (props: PropsType) => {
         return (
           <div
             className={style['canvas-item']}
-            style={selectId === c.fe_id ? {border: '1px solid #1890ff'} : {}}
+            style={selectId === c.fe_id ? {border: '1.5px solid #1890ff'} : {}}
             key={c.fe_id}
             onClick={e => {
               handleSelectId(e, c.fe_id)

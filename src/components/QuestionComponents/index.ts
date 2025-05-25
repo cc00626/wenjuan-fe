@@ -15,6 +15,16 @@ export type ComponentConfigType = {
 
 //全局组件的配置列表
 export const componentConfigList: ComponentConfigType[] = [QuestionTitleConfig, QuestionInputConfig]
+//组件库中的分组
+export type ComponentGroupType = {
+  groupId: string
+  groupName: string
+  componentConfig: ComponentConfigType[]
+}
+export const componentGroup: ComponentGroupType[] = [
+  {groupId: 'text', groupName: '文本显示', componentConfig: [QuestionTitleConfig]},
+  {groupId: 'input', groupName: '用户输入', componentConfig: [QuestionInputConfig]},
+]
 
 //获取组建的配置函数
 export function getComponentConfig(type: string) {
