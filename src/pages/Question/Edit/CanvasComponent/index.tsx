@@ -1,11 +1,10 @@
-import React, {FC} from 'react'
+import React, {FC, MouseEvent} from 'react'
 import style from './index.module.scss'
-import QuestionTitle from '../../../../components/QuestionComponents/QuestionTitle/Component'
-import QuestionInput from '../../../../components/QuestionComponents/QuestionInput/Component'
 import useGetComponent from '../../../../hooks/useGetComponent'
 import {getComponentConfig} from '../../../../components/QuestionComponents'
-import {ComponentInfoType} from '../../../../store/component'
+import {changeSelectId, ComponentInfoType} from '../../../../store/component'
 import {Spin} from 'antd'
+import {useDispatch} from 'react-redux'
 type PropsType = {
   loading: boolean
 }
@@ -20,7 +19,14 @@ const getComponent = (c: ComponentInfoType) => {
 }
 const CanvasComponent: FC<PropsType> = (props: PropsType) => {
   const {loading} = props
-  const {componentList} = useGetComponent() //从redux中获取组件列表
+  const {componentList, selectId} = useGetComponent() //从redux中获取组件列表
+  const dispatch = useDispatch()
+  //点击组件,记录选择的id
+  const handleSelectId = (e: MouseEvent<HTMLDivElement>, id: string) => {
+    e.stopPropagation() //阻止冒泡
+    //保存到redux中
+    dispatch(changeSelectId(id))
+  }
   if (loading)
     return (
       <div style={{textAlign: 'center', marginTop: '20px'}}>
@@ -31,7 +37,14 @@ const CanvasComponent: FC<PropsType> = (props: PropsType) => {
     <div className={style.canvas}>
       {componentList.map(c => {
         return (
-          <div className={style['canvas-item']} key={c.fe_id}>
+          <div
+            className={style['canvas-item']}
+            style={selectId === c.fe_id ? {border: '1px solid #1890ff'} : {}}
+            key={c.fe_id}
+            onClick={e => {
+              handleSelectId(e, c.fe_id)
+            }}
+          >
             <div className={style.component}>{getComponent(c)}</div>
           </div>
         )

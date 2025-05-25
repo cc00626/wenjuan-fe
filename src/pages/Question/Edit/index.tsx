@@ -2,8 +2,16 @@ import React, {FC} from 'react'
 import {useLoadQuestionData} from '../../../hooks/useLoadQuestionData'
 import style from './index.module.scss'
 import CanvasComponent from './CanvasComponent'
+import {useDispatch} from 'react-redux'
+import {changeSelectId} from '../../../store/component'
 const Edit: FC = () => {
-  const {loading, error} = useLoadQuestionData()
+  const {loading} = useLoadQuestionData()
+  const dispatch = useDispatch()
+  //点击外部,清除点击组件的边框样式
+  const handleRemoveSelected = () => {
+    dispatch(changeSelectId(''))
+  }
+
   return (
     <div className={style['edit-main']}>
       <div className={style.header} style={{height: '40px'}}>
@@ -11,7 +19,7 @@ const Edit: FC = () => {
       </div>
       <div className={style.container}>
         <div className={style.left}>left</div>
-        <div className={style.center}>
+        <div className={style.center} onClick={handleRemoveSelected}>
           <div className={style.canvas}>
             <div style={{height: '700px'}}>
               <CanvasComponent loading={loading} />

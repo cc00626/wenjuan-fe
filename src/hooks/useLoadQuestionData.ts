@@ -2,7 +2,7 @@ import {useParams} from 'react-router-dom'
 import {getQuestion} from '../api/question'
 import {useRequest} from 'ahooks'
 import {useEffect} from 'react'
-import {useDispatch, UseDispatch} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import {resetComponent} from '../store/component'
 export function useLoadQuestionData() {
   // const [loading, setLoading] = useState(true)
@@ -41,9 +41,6 @@ export function useLoadQuestionData() {
     },
     {
       manual: true,
-      onSuccess: res => {
-        console.log(res)
-      },
     }
   )
 
@@ -51,7 +48,7 @@ export function useLoadQuestionData() {
   useEffect(() => {
     if (!data) return
     const {componentList = []} = data
-    dispatch(resetComponent({componentList}))
+    dispatch(resetComponent({selectId: '', componentList}))
   }, [data])
 
   //监听id加载数据
