@@ -27,6 +27,7 @@ const Star: FC = () => {
         {!loading && list.length === 0 && <Empty description="暂无数据" />}
         {!loading &&
           list.length > 0 &&
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           list.map((questionItem: any) => {
             return <QuestionCard key={questionItem._id} {...questionItem} />
           })}

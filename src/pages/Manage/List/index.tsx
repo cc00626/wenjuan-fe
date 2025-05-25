@@ -10,18 +10,14 @@ const List: FC = () => {
   const [isStart, setIsStart] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>(0)
-  const [list = [], setList] = useState<any>() //列表数据
+  const [list = [], setList] = useState<object[]>() //列表数据
   const loadDataRef = useRef<HTMLDivElement>(null) //获取加载dom元素
   const isLoadMore = total >= list.length
   const [searchParams] = useSearchParams()
   const keyword = useSearchParams()[0].get('keyword') || ''
 
   //加载数据
-  const {
-    loading,
-    error,
-    run: loadData,
-  } = useRequest(
+  const {loading, run: loadData} = useRequest(
     async () => {
       return await getQuestionList({page, pageSize: 10, keyword: keyword})
     },
@@ -98,6 +94,7 @@ const List: FC = () => {
       </div>
       <div className={style.center}>
         {list.length > 0 &&
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           list.map((questionItem: any) => {
             return <QuestionCard key={questionItem._id} {...questionItem} />
           })}

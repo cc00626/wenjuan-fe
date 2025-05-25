@@ -26,7 +26,7 @@ export async function getQuestionList(opt: Partial<SearchOption>): Promise<ResDa
 }
 
 //更新问卷
-export async function updateQuestion(id: string, opt: any): Promise<ResDataType> {
+export async function updateQuestion(id: string, opt: Partial<SearchOption>): Promise<ResDataType> {
   const data = await axios.patch(`/api/question/${id}`, opt)
   return data
 }
