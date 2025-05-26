@@ -1,6 +1,8 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {ComponentPropType} from '../../components/QuestionComponents'
-import getSelectId from './getSelectId'
+import {getSelectId, addComponentToCanvas} from './utils'
+import cloneDeep from 'lodash.clonedeep'
+import {nanoid} from 'nanoid'
 //组件信息的类型
 export type ComponentInfoType = {
   fe_id: string
@@ -15,6 +17,7 @@ export type ComponentInfoType = {
 export type ComponentStateType = {
   selectId?: string
   componentList: ComponentInfoType[]
+  copyComponent?: ComponentInfoType | null
 }
 //初始化数据
 const INIT_STATE: ComponentStateType = {selectId: '', componentList: []}
@@ -34,15 +37,16 @@ const createReducer = createSlice({
     },
     //从组件库中添加组件到画布中
     addComponent: (state: ComponentStateType, action: PayloadAction<ComponentInfoType>) => {
-      if (state.selectId === '') {
-        //添加到最后一位
-        state.componentList.push(action.payload)
-      } else {
-        //添加到选中组件的后面
-        const index = state.componentList.findIndex(item => item.fe_id === state.selectId)
-        state.componentList.splice(index + 1, 0, action.payload)
-      }
-      state.selectId = action.payload.fe_id
+      // if (state.selectId === '') {
+      //   //添加到最后一位
+      //   state.componentList.push(action.payload)
+      // } else {
+      //   //添加到选中组件的后面
+      //   const index = state.componentList.findIndex(item => item.fe_id === state.selectId)
+      //   state.componentList.splice(index + 1, 0, action.payload)
+      // }
+      // state.selectId = action.payload.fe_id
+      addComponentToCanvas(state, action.payload)
       return state
     },
     //修改右侧表单内容自动添加到画布上
@@ -59,15 +63,13 @@ const createReducer = createSlice({
       return state
     },
     //删除组件
-    deleteComponent: (state: ComponentStateType) => {
+    deleteComponent: (state: ComponentStateType, action: PayloadAction<{fe_id: string}>) => {
       const {selectId, componentList} = state
       //根据删除的元素重新设置selectId
       //删除当前选中的组件
-      const index = componentList.findIndex(item => item.fe_id === selectId)
-      if (index < 0) {
-        return state
-      }
-      state.selectId = getSelectId(index, componentList)
+      // const newComponentList = componentList.filter(c => !c.ishidden)
+      state.selectId = getSelectId(action.payload.fe_id, componentList)
+      const index = componentList.findIndex(item => item.fe_id === action.payload.fe_id)
       componentList.splice(index, 1)
       return state
     },
@@ -81,13 +83,8 @@ const createReducer = createSlice({
       //获取当前选中的组件
       //获取index
       const newComponent = componentList.filter(c => !c.ishidden).find(item => item.fe_id === fe_id)
-      const index = componentList.filter(c => !c.ishidden).findIndex(item => item.fe_id === fe_id)
-      if (index < 0) {
-        //没有选中组件
-        return state
-      }
       //重新设置selectId
-      const newSelectId = getSelectId(index, componentList)
+      const newSelectId = getSelectId(fe_id, componentList)
       state.selectId = newSelectId
       //修改当前选中的ishidden属性
       if (newComponent) {
@@ -103,6 +100,23 @@ const createReducer = createSlice({
       }
       return state
     },
+    //复制
+    copyComponentToRedux: (state: ComponentStateType, action: PayloadAction<{fe_id: string}>) => {
+      //获取当前组件
+      const currComp = state.componentList.find(c => c.fe_id === action.payload.fe_id)
+      //将组件添加到copyComponent中,设置新的fe_id
+      state.copyComponent = cloneDeep(currComp) as ComponentInfoType
+      return state
+    },
+    //粘贴
+    pasteComponent: (state: ComponentStateType) => {
+      //获取copyComponent 添加到画布中
+      if (state.copyComponent) {
+        //每次粘贴,生成新的id
+        const newCopyComponent = cloneDeep({...state.copyComponent, fe_id: nanoid()})
+        addComponentToCanvas(state, newCopyComponent)
+      }
+    },
   },
 })
 
@@ -114,5 +128,7 @@ export const {
   deleteComponent,
   changeHiddenFromComponent,
   lockComponent,
+  copyComponentToRedux,
+  pasteComponent,
 } = createReducer.actions
 export default createReducer.reducer

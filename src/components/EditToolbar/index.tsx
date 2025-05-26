@@ -1,17 +1,32 @@
-import {DeleteOutlined, EyeOutlined, LockOutlined, UnlockOutlined} from '@ant-design/icons'
+import {
+  BlockOutlined,
+  CopyOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+  LockOutlined,
+  UnlockOutlined,
+} from '@ant-design/icons'
 import {Button, Space, Tooltip} from 'antd'
 import React, {FC} from 'react'
 import {useDispatch} from 'react-redux'
-import {changeHiddenFromComponent, deleteComponent, lockComponent} from '../../store/component'
+import {
+  changeHiddenFromComponent,
+  copyComponentToRedux,
+  deleteComponent,
+  lockComponent,
+  pasteComponent,
+} from '../../store/component'
 import useGetComponent from '../../hooks/useGetComponent'
 const EditToolbar: FC = () => {
   const dispatch = useDispatch()
-  const {selectId, comopnentInfo} = useGetComponent()
+  const {selectId, comopnentInfo, copyComponent} = useGetComponent()
   const {islock} = comopnentInfo || {}
 
   //删除功能
   const handleDelete = () => {
-    dispatch(deleteComponent())
+    if (selectId) {
+      dispatch(deleteComponent({fe_id: selectId}))
+    }
   }
   //显示隐藏功能
   const handleIshidden = () => {
@@ -23,6 +38,20 @@ const EditToolbar: FC = () => {
   const handleIslock = () => {
     if (selectId) {
       dispatch(lockComponent({fe_id: selectId}))
+    }
+  }
+
+  //复制
+  const handleCopy = () => {
+    if (selectId) {
+      dispatch(copyComponentToRedux({fe_id: selectId}))
+    }
+  }
+
+  //粘贴
+  const handlePaste = () => {
+    if (selectId) {
+      dispatch(pasteComponent())
     }
   }
   return (
@@ -40,6 +69,17 @@ const EditToolbar: FC = () => {
             icon={islock ? <UnlockOutlined /> : <LockOutlined />}
             type={islock ? 'primary' : 'default'}
             onClick={handleIslock}
+          ></Button>
+        </Tooltip>
+        <Tooltip title="复制">
+          <Button shape="circle" icon={<CopyOutlined />} onClick={handleCopy}></Button>
+        </Tooltip>
+        <Tooltip title="粘贴">
+          <Button
+            shape="circle"
+            icon={<BlockOutlined />}
+            onClick={handlePaste}
+            disabled={copyComponent == null}
           ></Button>
         </Tooltip>
       </Space>
