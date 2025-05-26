@@ -17,7 +17,7 @@ const ComponentProp: FC = () => {
   if (ComponentConfig == null) return <div>未找到组件配置</div>
   const {PropComponent} = ComponentConfig
 
-  // 组件属性修改事件
+  // 组件属性修改事件,统一添加到redux中
   const handleChange = (newProps: ComponentPropType) => {
     if (comopnentInfo == null) return
     dispatch(changeFormToCanvas({fe_id, newProps}))

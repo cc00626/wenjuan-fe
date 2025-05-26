@@ -1,0 +1,21 @@
+.edit-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 12px 0px;
+  margin: 0px 20px;
+  .left{
+    flex: 1;
+    text-align: left;
+  }
+  .center{
+    flex: 1;
+    text-align: center;
+  }
+  .right{
+    flex: 1;
+    text-align: right;
+  }
+}
