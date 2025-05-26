@@ -4,17 +4,29 @@ import {QuestionTitlePropsType} from './type'
 
 //属性表单
 const QuestionTitlePropsComponent: FC<QuestionTitlePropsType> = (props: QuestionTitlePropsType) => {
-  const {text, level, isCenter} = props
+  const {text, level, isCenter, onChange} = props
   const [form] = Form.useForm()
   useEffect(() => {
     form.setFieldsValue({text, level, isCenter})
   }, [text, level, isCenter])
+  //字段值发生变化
+  const changeValue = () => {
+    if (onChange) {
+      onChange(form.getFieldsValue())
+    }
+  }
+
   return (
-    <Form layout="vertical" initialValues={{text, level, isCenter}} form={form}>
-      <Form.Item label="标题" name="title" rules={[{required: true, message: '请输入标题'}]}>
+    <Form
+      layout="vertical"
+      initialValues={{text, level, isCenter}}
+      form={form}
+      onValuesChange={changeValue}
+    >
+      <Form.Item label="标题" name="text" rules={[{required: true, message: '请输入标题'}]}>
         <Input />
       </Form.Item>
-      <Form.Item>
+      <Form.Item label="级别" name="level">
         <Select>
           <Select.Option value={1}>1</Select.Option>
           <Select.Option value={2}>2</Select.Option>

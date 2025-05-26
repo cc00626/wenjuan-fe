@@ -45,12 +45,19 @@ const createReducer = createSlice({
     //修改右侧表单内容自动添加到画布上
     changeFormToCanvas: (
       state: ComponentStateType,
-      actions: PayloadAction<{fe_id: string; props: ComponentPropType}>
+      actions: PayloadAction<{fe_id: string; newProps: ComponentPropType}>
     ) => {
+      const {fe_id, newProps} = actions.payload
+      //当前点击的组件
+      const currentComponent = state.componentList.find(item => item.fe_id === fe_id)
+      if (currentComponent) {
+        currentComponent.props = newProps
+      }
       return state
     },
   },
 })
 
-export const {resetComponent, changeSelectId, addComponent} = createReducer.actions
+export const {resetComponent, changeSelectId, addComponent, changeFormToCanvas} =
+  createReducer.actions
 export default createReducer.reducer
