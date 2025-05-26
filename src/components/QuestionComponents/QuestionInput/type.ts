@@ -1,4 +1,4 @@
-export interface QuestionInputType {
+export interface QuestionInputPropsType {
   title?: string
   placeholder?: string
 }

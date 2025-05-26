@@ -1,10 +1,10 @@
 import React, {FC} from 'react'
 import {Typography} from 'antd'
-import {QuestionTitleProps, QuestionTitleType} from './type'
+import {QuestionTitleProps, QuestionTitlePropsType} from './type'
 
 const {Title} = Typography
 //标题
-const QuestionTitle: FC<QuestionTitleType> = (props: QuestionTitleType) => {
+const QuestionTitle: FC<QuestionTitlePropsType> = (props: QuestionTitlePropsType) => {
   const {text = '123123', level = 1, isCenter = false} = {...QuestionTitleProps, ...props}
   return (
     <div>

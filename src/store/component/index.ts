@@ -42,6 +42,13 @@ const createReducer = createSlice({
       state.selectId = action.payload.fe_id
       return state
     },
+    //修改右侧表单内容自动添加到画布上
+    changeFormToCanvas: (
+      state: ComponentStateType,
+      actions: PayloadAction<{fe_id: string; props: ComponentPropType}>
+    ) => {
+      return state
+    },
   },
 })
 

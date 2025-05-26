@@ -1,15 +1,16 @@
 import {FC} from 'react'
-import QuestionInputConfig, {QuestionInputType} from './QuestionInput/index'
-import QuestionTitleConfig, {QuestionTitleType} from './QuestionTitle/index'
+import QuestionInputConfig, {QuestionInputPropsType} from './QuestionInput/index'
+import QuestionTitleConfig, {QuestionTitlePropsType} from './QuestionTitle/index'
 
 //组件的props类型
-export type ComponentPropType = QuestionInputType & QuestionTitleType
+export type ComponentPropType = QuestionInputPropsType & QuestionTitlePropsType
 
 //组件的配置类型
 export type ComponentConfigType = {
   title: string
   type: string
   Component: FC<ComponentPropType>
+  PropComponent: FC<ComponentPropType>
   defaultProps: ComponentPropType
 }
 

@@ -5,6 +5,7 @@ import CanvasComponent from './CanvasComponent'
 import {useDispatch} from 'react-redux'
 import {changeSelectId} from '../../../store/component'
 import LeftPanel from './LeftPanel'
+import RightPanel from './RightPanel'
 const Edit: FC = () => {
   const {loading} = useLoadQuestionData()
   const dispatch = useDispatch()
@@ -29,7 +30,9 @@ const Edit: FC = () => {
             </div>
           </div>
         </div>
-        <div className={style.right}>right</div>
+        <div className={style.right}>
+          <RightPanel />
+        </div>
       </div>
     </div>
   )

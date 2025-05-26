@@ -1,9 +1,9 @@
 import React, {FC} from 'react'
-import {QuestionInputProps, QuestionInputType} from './type'
+import {QuestionInputProps, QuestionInputPropsType} from './type'
 import {Typography, Input} from 'antd'
 
 const {Paragraph} = Typography
-const QuestionInput: FC<QuestionInputType> = (props: QuestionInputType) => {
+const QuestionInput: FC<QuestionInputPropsType> = (props: QuestionInputPropsType) => {
   const {title = '', placeholder = '请输入'} = {...QuestionInputProps, ...props}
   return (
     <div>
