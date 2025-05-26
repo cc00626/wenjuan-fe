@@ -8,9 +8,10 @@ export default function useGetComponent() {
 
   //根据选中组件id 获取当前的组件
 
-  const comopnentInfo = componentList.find(item => {
-    return item.fe_id === selectId
-  })
+  const comopnentInfo =
+    componentList.find(item => {
+      return item.fe_id === selectId
+    }) || null
 
   return {
     componentList,

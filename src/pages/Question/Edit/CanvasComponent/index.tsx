@@ -35,20 +35,25 @@ const CanvasComponent: FC<PropsType> = (props: PropsType) => {
     )
   return (
     <div className={style.canvas}>
-      {componentList.map(c => {
-        return (
-          <div
-            className={style['canvas-item']}
-            style={selectId === c.fe_id ? {border: '1.5px solid #1890ff'} : {}}
-            key={c.fe_id}
-            onClick={e => {
-              handleSelectId(e, c.fe_id)
-            }}
-          >
-            <div className={style.component}>{getComponent(c)}</div>
-          </div>
-        )
-      })}
+      {componentList
+        .filter(c => !c.ishidden)
+        .map(c => {
+          return (
+            <div
+              className={style['canvas-item']}
+              style={{
+                ...(selectId === c.fe_id ? {border: '1.5px solid #1890ff'} : {}),
+                ...(c.islock ? {cursor: 'not-allowed', opacity: '0.3'} : {}),
+              }}
+              key={c.fe_id}
+              onClick={e => {
+                handleSelectId(e, c.fe_id)
+              }}
+            >
+              <div className={style.component}>{getComponent(c)}</div>
+            </div>
+          )
+        })}
       {/* <div className={style['canvas-item']}>
         <div className={style.component}>
           <QuestionInput />

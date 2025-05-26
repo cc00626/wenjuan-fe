@@ -4,7 +4,7 @@ import {QuestionTitlePropsType} from './type'
 
 //属性表单
 const QuestionTitlePropsComponent: FC<QuestionTitlePropsType> = (props: QuestionTitlePropsType) => {
-  const {text, level, isCenter, onChange} = props
+  const {text, level, isCenter, onChange, disable} = props
   const [form] = Form.useForm()
   useEffect(() => {
     form.setFieldsValue({text, level, isCenter})
@@ -22,6 +22,7 @@ const QuestionTitlePropsComponent: FC<QuestionTitlePropsType> = (props: Question
       initialValues={{text, level, isCenter}}
       form={form}
       onValuesChange={changeValue}
+      disabled={disable}
     >
       <Form.Item label="标题" name="text" rules={[{required: true, message: '请输入标题'}]}>
         <Input />

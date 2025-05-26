@@ -1,9 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {ComponentPropType} from '../../components/QuestionComponents'
+import getSelectId from './getSelectId'
 //组件信息的类型
 export type ComponentInfoType = {
   fe_id: string
   title: string
+  ishidden?: boolean
+  islock?: boolean
   type: string
   props: ComponentPropType
 }
@@ -55,9 +58,61 @@ const createReducer = createSlice({
       }
       return state
     },
+    //删除组件
+    deleteComponent: (state: ComponentStateType) => {
+      const {selectId, componentList} = state
+      //根据删除的元素重新设置selectId
+      //删除当前选中的组件
+      const index = componentList.findIndex(item => item.fe_id === selectId)
+      if (index < 0) {
+        return state
+      }
+      state.selectId = getSelectId(index, componentList)
+      componentList.splice(index, 1)
+      return state
+    },
+    //显示,隐藏组件
+    changeHiddenFromComponent: (
+      state: ComponentStateType,
+      action: PayloadAction<{fe_id: string; ishidden: boolean}>
+    ) => {
+      const {componentList} = state
+      const {fe_id, ishidden} = action.payload
+      //获取当前选中的组件
+      //获取index
+      const newComponent = componentList.filter(c => !c.ishidden).find(item => item.fe_id === fe_id)
+      const index = componentList.filter(c => !c.ishidden).findIndex(item => item.fe_id === fe_id)
+      if (index < 0) {
+        //没有选中组件
+        return state
+      }
+      //重新设置selectId
+      const newSelectId = getSelectId(index, componentList)
+      state.selectId = newSelectId
+      //修改当前选中的ishidden属性
+      if (newComponent) {
+        newComponent.ishidden = ishidden
+      }
+      return state
+    },
+    //锁定,解锁
+    lockComponent: (state: ComponentStateType, action: PayloadAction<{fe_id: string}>) => {
+      const currComp = state.componentList.find(c => c.fe_id === action.payload.fe_id)
+      if (currComp) {
+        currComp.islock = !currComp.islock
+      }
+      return state
+    },
   },
 })
 
-export const {resetComponent, changeSelectId, addComponent, changeFormToCanvas} =
-  createReducer.actions
+export const {
+  resetComponent,
+  changeSelectId,
+  addComponent,
+  changeFormToCanvas,
+  deleteComponent,
+  changeHiddenFromComponent,
+  lockComponent,
+} = createReducer.actions
 export default createReducer.reducer

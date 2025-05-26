@@ -12,7 +12,7 @@ const ComponentProp: FC = () => {
   //点击了空白处
   if (comopnentInfo == undefined) return <div>未选中组件</div>
   //根据组件类型获取组件的配置
-  const {type, props, fe_id} = comopnentInfo
+  const {type, props, fe_id, islock} = comopnentInfo
   const ComponentConfig = getComponentConfig(type)
   if (ComponentConfig == null) return <div>未找到组件配置</div>
   const {PropComponent} = ComponentConfig
@@ -23,6 +23,6 @@ const ComponentProp: FC = () => {
     dispatch(changeFormToCanvas({fe_id, newProps}))
   }
 
-  return <PropComponent {...props} onChange={handleChange} />
+  return <PropComponent {...props} onChange={handleChange} disable={islock} />
 }
 export default ComponentProp

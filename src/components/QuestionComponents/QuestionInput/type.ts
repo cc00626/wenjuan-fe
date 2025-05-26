@@ -2,6 +2,7 @@ export interface QuestionInputPropsType {
   title?: string
   placeholder?: string
   onChange?: (newProps: QuestionInputPropsType) => void
+  disable?: boolean
 }
 
 export const QuestionInputProps = {
