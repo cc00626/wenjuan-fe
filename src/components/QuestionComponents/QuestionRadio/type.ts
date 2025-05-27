@@ -5,7 +5,7 @@ export interface optionType {
 
 export interface QuestionRadioPropsType {
   title?: string
-  isVertical?: false
+  isVertical?: boolean
   value?: string
   onChange?: (newProps: QuestionRadioPropsType) => void
   disable?: boolean

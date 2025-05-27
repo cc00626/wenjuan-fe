@@ -3,6 +3,7 @@ import {Tabs} from 'antd'
 import type {TabsProps} from 'antd'
 import ComponentLib from '../../../../components/ComponentLib'
 import {AppstoreOutlined, LayoutOutlined} from '@ant-design/icons'
+import ComponentLayer from '../../../../components/ComponentLayer'
 
 const items: TabsProps['items'] = [
   {
@@ -23,11 +24,15 @@ const items: TabsProps['items'] = [
         图层
       </span>
     ),
-    children: <div>图层</div>,
+    children: <ComponentLayer />,
   },
 ]
 const LeftPanel: FC = () => {
-  return <Tabs defaultActiveKey="componentLib" items={items} />
+  return (
+    <div>
+      <Tabs defaultActiveKey="componentLib" items={items} />
+    </div>
+  )
 }
 
 export default LeftPanel

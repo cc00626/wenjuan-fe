@@ -7,7 +7,7 @@ import {nanoid} from 'nanoid'
 export type ComponentInfoType = {
   fe_id: string
   title: string
-  ishidden?: boolean
+  ishidden?: boolean | false
   islock?: boolean
   type: string
   props: ComponentPropType
@@ -82,10 +82,15 @@ const createReducer = createSlice({
       const {fe_id, ishidden} = action.payload
       //获取当前选中的组件
       //获取index
-      const newComponent = componentList.filter(c => !c.ishidden).find(item => item.fe_id === fe_id)
-      //重新设置selectId
-      const newSelectId = getSelectId(fe_id, componentList)
-      state.selectId = newSelectId
+      const newComponent = componentList.find(item => item.fe_id === fe_id)
+      if (ishidden) {
+        //表示要进行隐藏,选中下一个
+        const newSelectId = getSelectId(fe_id, componentList)
+        state.selectId = newSelectId
+      } else {
+        //表示要显示,选中当前组件
+        state.selectId = fe_id
+      }
       //修改当前选中的ishidden属性
       if (newComponent) {
         newComponent.ishidden = ishidden
@@ -117,6 +122,18 @@ const createReducer = createSlice({
         addComponentToCanvas(state, newCopyComponent)
       }
     },
+    //修改组件的标题
+    changeComponentTitle: (
+      state: ComponentStateType,
+      action: PayloadAction<{fe_id: string; title: string}>
+    ) => {
+      const current = state.componentList.find(item => {
+        return item.fe_id === action.payload.fe_id
+      })
+      if (current) {
+        current.title = action.payload.title
+      }
+    },
   },
 })
 
@@ -130,5 +147,6 @@ export const {
   lockComponent,
   copyComponentToRedux,
   pasteComponent,
+  changeComponentTitle,
 } = createReducer.actions
 export default createReducer.reducer

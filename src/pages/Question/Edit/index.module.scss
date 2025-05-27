@@ -16,12 +16,14 @@
   height: 100%;
   padding: 12px 0px;
   margin: 0px 24px;
+  overflow: hidden;
 
   .left {
     width: 285px;
     background-color: #fff;
     padding: 0px 12px;
     height: 100%;
+    overflow: auto;
   }
 
   .center {
