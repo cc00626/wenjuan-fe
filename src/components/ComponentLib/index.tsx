@@ -9,31 +9,33 @@ const {Title} = Typography
 
 const ComponentLib: FC = () => {
   const dispatch = useDispatch()
-  const addToCanvas = (item: ComponentGroupType) => {
-    const {componentConfig} = item
+  const addToCanvas = (item: ComponentConfigType) => {
+    const {title, type, defaultProps} = item
     //找到组件的信息
-    componentConfig.map((item: ComponentConfigType) => {
-      const {title, type, defaultProps} = item
-      dispatch(addComponent({fe_id: nanoid(), title, type, props: defaultProps}))
-    })
+    dispatch(addComponent({fe_id: nanoid(), title, type, props: defaultProps}))
   }
 
   //根据类型选择组件
   const GetComponent = (c: ComponentGroupType) => {
     const {componentConfig} = c
     return (
-      <div
-        className={style.component}
-        onClick={() => {
-          addToCanvas(c)
-        }}
-      >
-        <div className={style.stopclick}>
-          {componentConfig.map((item: ComponentConfigType) => {
-            const {Component} = item
-            return <Component key={item.type} />
-          })}
-        </div>
+      <div>
+        {componentConfig.map((item: ComponentConfigType) => {
+          const {Component} = item
+          return (
+            <div
+              key={item.type}
+              className={style.component}
+              onClick={() => {
+                addToCanvas(item)
+              }}
+            >
+              <div className={style.stopclick}>
+                <Component />
+              </div>
+            </div>
+          )
+        })}
       </div>
     )
   }
