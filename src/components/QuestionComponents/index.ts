@@ -2,12 +2,15 @@ import {FC} from 'react'
 import QuestionInputConfig, {QuestionInputPropsType} from './QuestionInput/index'
 import QuestionTitleConfig, {QuestionTitlePropsType} from './QuestionTitle/index'
 import QuestionParagraphConfig, {QuestionParagraphPropsType} from './QuestionParagraph/index'
+import QuestionTextareaConfig, {QuestionTextareaPropsType} from './QuestionTextarea/index'
+import QuestionRadioConfig, {QuestionRadioPropsType} from './QuestionRadio/index'
 
 //组件的props类型
 export type ComponentPropType = QuestionInputPropsType &
   QuestionTitlePropsType &
-  QuestionParagraphPropsType
-
+  QuestionParagraphPropsType &
+  QuestionTextareaPropsType &
+  QuestionRadioPropsType
 //组件的配置类型
 export type ComponentConfigType = {
   title: string
@@ -22,6 +25,8 @@ export const componentConfigList: ComponentConfigType[] = [
   QuestionTitleConfig,
   QuestionInputConfig,
   QuestionParagraphConfig,
+  QuestionTextareaConfig,
+  QuestionRadioConfig,
 ]
 
 //组件库中的分组
@@ -36,7 +41,16 @@ export const componentGroup: ComponentGroupType[] = [
     groupName: '文本显示',
     componentConfig: [QuestionTitleConfig, QuestionParagraphConfig],
   },
-  {groupId: 'input', groupName: '用户输入', componentConfig: [QuestionInputConfig]},
+  {
+    groupId: 'input',
+    groupName: '用户输入',
+    componentConfig: [QuestionInputConfig, QuestionTextareaConfig],
+  },
+  {
+    groupId: 'select',
+    groupName: '用户选择',
+    componentConfig: [QuestionRadioConfig],
+  },
 ]
 
 //获取组建的配置函数

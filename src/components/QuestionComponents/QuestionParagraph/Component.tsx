@@ -14,7 +14,10 @@ const QuestionParagraph: FC<QuestionParagraphPropsType> = (props: QuestionParagr
               <span>{item}</span>
             </div>
           ) : (
-            <span>{item}</span>
+            <div key={index}>
+              <br />
+              <span>{item}</span>
+            </div>
           )
         })}
       </Paragraph>

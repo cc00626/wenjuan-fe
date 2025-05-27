@@ -64,7 +64,7 @@ const createReducer = createSlice({
     },
     //删除组件
     deleteComponent: (state: ComponentStateType, action: PayloadAction<{fe_id: string}>) => {
-      const {selectId, componentList} = state
+      const {componentList} = state
       //根据删除的元素重新设置selectId
       //删除当前选中的组件
       // const newComponentList = componentList.filter(c => !c.ishidden)
